@@ -19,18 +19,29 @@ const getTripDestinations = async (req, res) => {
     }
 }   
 
-// const getAllTrips = async (req, res) => {
-//     try{
-//         const destination_id  = parseInt(req.params.id)
-//         const results = await pool.query('SELECT * FROM trips INNER JOIN trip_destinations ON trips.id = trip_destinations.trip_id WHERE trip_destinations.destination_id = $1', [destination_id])
-//         res.status(200).json(results.rows)
-//     } catch (error) {
-//         res.status(400).json({error: error.message})
-//     }
-// }
+const getAllTrips = async (req, res) => {
+    try{
+        const destination_id  = parseInt(req.params.destinationId)
+        const results = await pool.query('SELECT * FROM trips INNER JOIN trips_destinations ON trips.id = trips_destinations.trip_id WHERE trips_destinations.destination_id = $1', [destination_id])
+        res.status(200).json(results.rows)
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+const getAllDestinations = async (req, res) => {
+    try{
+        const trip_id = parseInt(req.params.tripId)
+        const results = await pool.query('SELECT * FROM destinations INNER JOIN trips_destinations ON destinations.id = trips_destinations.destination_id WHERE trips_destinations.trip_id = $1', [trip_id])
+        res.status(200).json(results.rows)
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
 
 export default {
     createTripDestination,
     getTripDestinations,
-    // getAllTrips
+    getAllTrips,
+    getAllDestinations
 }
